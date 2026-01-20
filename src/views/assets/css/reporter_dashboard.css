@@ -1,0 +1,64 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #eef1f5;
+}
+
+.dashboard {
+    max-width: 900px;
+    margin: auto;
+    padding: 20px;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header button {
+    padding: 8px 16px;
+    cursor: pointer;
+}
+
+.report-box,
+.issues-box {
+    background: #fff;
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 6px;
+}
+
+.report-box form {
+    display: grid;
+    gap: 10px;
+}
+
+.report-box input,
+.report-box textarea,
+.report-box select,
+.report-box button {
+    padding: 10px;
+    font-size: 14px;
+}
+
+.issue-card {
+    background: #f9f9f9;
+    border-left: 5px solid #007bff;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+.issue-card h4 {
+    margin: 0 0 6px;
+}
+
+.status {
+    font-weight: bold;
+}
+
+.impact {
+    margin-top: 10px;
+    color: green;
+    font-weight: bold;
+}
