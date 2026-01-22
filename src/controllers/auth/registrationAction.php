@@ -3,7 +3,7 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-include("../../models/userModel.php");
+include("../../models/UserModel.php");
 include("../validation/auth/registerValidation.php");
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
@@ -12,6 +12,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $name             = $_POST['name'] ?? '';
     $email            = $_POST['email'] ?? '';
     $role             = $_POST['role'] ?? '';
+    $reporterType     = $_POST['reporterType'] ?? '';
+    $responderSkill    = $_POST['responderType'] ?? '';
     $password         = $_POST['password'] ?? '';
     $confirmPassword  = $_POST['confirm_password'] ?? '';
 
@@ -26,7 +28,33 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     if ($validation === true) {
 
-        if (registerUser($conn, $name, $email, $password, $role)) {
+        // Role-based validation (must)
+        if ($role === "reporter") {
+            if (empty($reporterType)) {
+                echo "
+                    <script>
+                        alert('Reporter must select Student or Faculty'); 
+                        window.location.href='../../views/auth/register.php';
+                    </script>";
+                exit;
+            }
+            $responderSkill = null; // force null
+        }
+
+        if ($role === "responder") {
+            if (empty($responderSkill)) {
+                echo "
+                    <script>
+                        alert('Responder must select a Skill'); 
+                        window.location.href='../../views/auth/register.php';
+                    </script>";
+                exit;
+            }
+            $reporterType = null; // force null
+        }
+
+
+        if (registerUser($conn, $name, $email, $password, $role, $reporterType, $responderSkill)) {
 
             echo "
                 <script>
@@ -35,7 +63,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 </script>
             ";
             exit;
-
         } else {
             echo "
                 <script>
@@ -44,7 +71,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 </script>
             ";
         }
-
     } else {
         echo "
             <script>
@@ -54,4 +80,3 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         ";
     }
 }
-?>

@@ -1,18 +1,18 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>User Registration | Help Desk System</title>
     <link rel="stylesheet" href="../assets/css/auth.css">
 </head>
+
 <body>
 
     <div class="auth-box">
         <h2>Create Account</h2>
 
-        <form action="../../controllers/auth/registerAction.php" method="POST">
+        <form action="../../controllers/auth/registrationAction.php" method="POST">
 
             <input type="text" name="name" placeholder="Full Name" required>
             <input type="email" name="email" placeholder="Email Address" required>
@@ -48,15 +48,15 @@
 
             <input type="password" name="confirm_password" placeholder="Confirm Password" required>
 
-            <div class="form-actions"> 
-                <button type="submit">Confirm</button> 
-                <button type="button" onclick="location.href='login.php'">Cancel</button> 
+            <div class="form-actions">
+                <button type="submit">Confirm</button>
+                <button type="button" onclick="location.href='login.php'">Cancel</button>
             </div>
         </form>
 
     </div>
 
-<script src="../assets/js/auth.js"></script>
+    <script src="../assets/js/auth.js"></script>
 </body>
-</html>
 
+</html>

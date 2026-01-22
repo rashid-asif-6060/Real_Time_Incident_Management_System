@@ -94,8 +94,8 @@
     </p>
 
     <div class="buttons">
-        <a href="../views/auth/login.php" class="login">Login</a>
-        <a href="../views/auth/register.php" class="register">Register</a>
+        <a href="views/auth/login.php" class="login">Login</a>
+        <a href="views/auth/register.php" class="register">Register</a>
     </div>
 </div>
 
