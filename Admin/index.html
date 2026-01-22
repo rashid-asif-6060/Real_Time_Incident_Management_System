@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Real Time Incident Management System</title>
+    <link rel="stylesheet" href="admin_style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <div class="sidebar">
+        <div class="logo">
+            <h2><i class="fas fa-tools"></i> IncidentMS</h2>
+            <p>Admin Dashboard</p>
+        </div>
+        <ul class="nav-menu">
+            <li><a href="#dashboard" class="active"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+            <li><a href="#intelligent-routing"><i class="fas fa-route"></i> Intelligent Routing</a></li>
+            <li><a href="#fake-report-detection"><i class="fas fa-user-slash"></i> Fake Report Detection</a></li>
+            <li><a href="#forecast-audit"><i class="fas fa-chart-bar"></i> Forecast & Audit</a></li>
+            <li><a href="#sla-escalation"><i class="fas fa-clock"></i> SLA Escalation</a></li>
+            <li><a href="#user-management"><i class="fas fa-users"></i> User Management</a></li>
+            <li><a href="#system-logs"><i class="fas fa-clipboard-list"></i> System Logs</a></li>
+            <li><a href="#settings"><i class="fas fa-cog"></i> Settings</a></li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Header -->
+        <div class="header">
+            <h1>Admin Dashboard</h1>
+            <div class="user-info">
+                <span><i class="fas fa-user-circle"></i> Welcome, Admin User</span>
+                <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+            </div>
+        </div>
+
+        <!-- Dashboard Stats -->
+        <div class="stats-container">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-exclamation-circle"></i>
+                </div>
+                <h3>Total Incidents</h3>
+                <div class="stat-number">1,247</div>
+                <span class="stat-change positive"><i class="fas fa-arrow-up"></i> 12% from last week</span>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-user-hard-hat"></i>
+                </div>
+                <h3>Active Responders</h3>
+                <div class="stat-number">48</div>
+                <span class="stat-change positive"><i class="fas fa-arrow-up"></i> 5% available</span>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h3>SLA Compliance</h3>
+                <div class="stat-number">94.2%</div>
+                <span class="stat-change positive"><i class="fas fa-arrow-up"></i> 2.3%</span>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-ban"></i>
+                </div>
+                <h3>Fake Reports</h3>
+                <div class="stat-number">23</div>
+                <span class="stat-change negative"><i class="fas fa-arrow-up"></i> 8% detected</span>
+            </div>
+        </div>
+
+        <!-- Intelligent Routing Section -->
+        <div id="intelligent-routing" class="feature-section">
+            <h2 class="section-title"><i class="fas fa-route"></i> Intelligent Routing</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h3><i class="fas fa-map-marker-alt"></i> Auto-Assign Incidents</h3>
+                    <p class="feature-desc">Automatically route incidents to available responders based on category, location, and workload.</p>
+                    
+                    <div class="form-group">
+                        <label for="incident-category"><i class="fas fa-folder"></i> Incident Category:</label>
+                        <select id="incident-category">
+                            <option value="technical">Technical (Computer/Network)</option>
+                            <option value="electrical">Electrical</option>
+                            <option value="plumbing">Plumbing</option>
+                            <option value="facility">Facility Maintenance</option>
+                            <option value="security">Security</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="incident-location"><i class="fas fa-map-pin"></i> Location:</label>
+                        <select id="incident-location">
+                            <option value="campus-north">Campus North</option>
+                            <option value="campus-south">Campus South</option>
+                            <option value="lab-building">Lab Building</option>
+                            <option value="admin-block">Admin Block</option>
+                        </select>
+                    </div>
+                    
+                    <button class="btn-primary" onclick="assignResponder()">
+                        <i class="fas fa-search"></i> Find & Assign Best Responder
+                    </button>
+                    
+                    <div id="routing-result" class="message info">
+                        <i class="fas fa-info-circle"></i> Select options and click the button to assign
+                    </div>
+                    
+                    <div class="incident-list">
+                        <h4><i class="fas fa-clock"></i> Pending Incidents for Routing:</h4>
+                        <div class="incident-item">
+                            <div class="incident-header">
+                                <span class="incident-id"><i class="fas fa-hashtag"></i> #INC-2024-4872</span>
+                                <span class="incident-priority high-priority">HIGH</span>
+                            </div>
+                            <p><strong><i class="fas fa-network-wired"></i> Network outage in Computer Lab 3</strong></p>
+                            <p><i class="far fa-clock"></i> Reported 2 hours ago • <i class="fas fa-tag"></i> Technical Category</p>
+                            <button class="btn-success" onclick="routeIncident(4872)">
+                                <i class="fas fa-paper-plane"></i> Route Now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="feature-card">
+                    <h3><i class="fas fa-users-cog"></i> Responder Management</h3>
+                    <p class="feature-desc">Manage responder availability, skills, and workload distribution.</p>
+                    
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Responder</th>
+                                    <th>Specialization</th>
+                                    <th>Active Tasks</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><i class="fas fa-user"></i> John Techman</td>
+                                    <td><span class="badge technical">Technical</span></td>
+                                    <td>3</td>
+                                    <td><span class="status-available"><i class="fas fa-circle"></i> Available</span></td>
+                                    <td><button class="btn-sm btn-success" onclick="assignToResponder('John')">Assign</button></td>
+                                </tr>
+                                <tr>
+                                    <td><i class="fas fa-user"></i> Sarah Electric</td>
+                                    <td><span class="badge electrical">Electrical</span></td>
+                                    <td>5</td>
+                                    <td><span class="status-busy"><i class="fas fa-circle"></i> Busy</span></td>
+                                    <td><button class="btn-sm btn-success" onclick="assignToResponder('Sarah')">Assign</button></td>
+                                </tr>
+                                <tr>
+                                    <td><i class="fas fa-user"></i> Mike Plumber</td>
+                                    <td><span class="badge plumbing">Plumbing</span></td>
+                                    <td>2</td>
+                                    <td><span class="status-available"><i class="fas fa-circle"></i> Available</span></td>
+                                    <td><button class="btn-sm btn-success" onclick="assignToResponder('Mike')">Assign</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="button-group">
+                        <button class="btn-primary" onclick="optimizeRoutes()">
+                            <i class="fas fa-magic"></i> Optimize All Routes
+                        </button>
+                        <button class="btn-secondary" onclick="viewAllResponders()">
+                            <i class="fas fa-eye"></i> View All Responders
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Fake Report Detection Section -->
+        <div id="fake-report-detection" class="feature-section">
+            <h2 class="section-title"><i class="fas fa-user-slash"></i> Fake Report Detection</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h3><i class="fas fa-search"></i> Suspected Fake Reports</h3>
+                    <p class="feature-desc">Reports flagged by system for potential fraud or duplicates.</p>
+                    
+                    <div class="incident-list" id="fake-reports-list">
+                        <div class="incident-item fake-report">
+                            <div class="incident-header">
+                                <span class="incident-id"><i class="fas fa-hashtag"></i> #INC-2024-5123</span>
+                                <span class="confidence-level high-confidence">85% Confidence</span>
+                            </div>
+                            <p><strong><i class="fas fa-exclamation-triangle"></i> Repeated network complaint</strong> - Similar to 3 other reports</p>
+                            <p><i class="fas fa-user-graduate"></i> Reported by: student_ahmed • <i class="fas fa-map-marker-alt"></i> Location: Dorm A</p>
+                            <div class="action-buttons">
+                                <button class="btn-danger" onclick="confirmFakeReport(5123)">
+                                    <i class="fas fa-ban"></i> Confirm Fake
+                                </button>
+                                <button class="btn-success" onclick="validateReport(5123)">
+                                    <i class="fas fa-check"></i> Validate Report
+                                </button>
+                                <button class="btn-secondary" onclick="reviewDetails(5123)">
+                                    <i class="fas fa-eye"></i> Review Details
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="incident-item fake-report">
+                            <div class="incident-header">
+                                <span class="incident-id"><i class="fas fa-hashtag"></i> #INC-2024-5124</span>
+                                <span class="confidence-level medium-confidence">72% Confidence</span>
+                            </div>
+                            <p><strong><i class="fas fa-exclamation-triangle"></i> Suspicious timing</strong> - Reported during off-hours repeatedly</p>
+                            <p><i class="fas fa-chalkboard-teacher"></i> Reported by: faculty_john • <i class="fas fa-map-marker-alt"></i> Location: Admin Block</p>
+                            <div class="action-buttons">
+                                <button class="btn-danger" onclick="confirmFakeReport(5124)">
+                                    <i class="fas fa-ban"></i> Confirm Fake
+                                </button>
+                                <button class="btn-success" onclick="validateReport(5124)">
+                                    <i class="fas fa-check"></i> Validate Report
+                                </button>
+                                <button class="btn-secondary" onclick="reviewDetails(5124)">
+                                    <i class="fas fa-eye"></i> Review Details
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="button-group">
+                        <button class="btn-primary" onclick="refreshFakeReports()">
+                            <i class="fas fa-sync-alt"></i> Refresh Detection List
+                        </button>
+                        <button class="btn-secondary" onclick="viewDetectionLog()">
+                            <i class="fas fa-history"></i> View Detection Log
+                        </button>
+                    </div>
+                    
+                    <div class="message warning" id="detection-stats">
+                        <i class="fas fa-chart-pie"></i> <strong>Detection Statistics:</strong> 23 fake reports detected this month. Accuracy: 92.5%
+                    </div>
+                </div>
+                
+                <div class="feature-card">
+                    <h3><i class="fas fa-sliders-h"></i> Detection Settings</h3>
+                    <p class="feature-desc">Configure parameters for fake report detection.</p>
+                    
+                    <div class="form-group">
+                        <label for="detection-sensitivity"><i class="fas fa-tachometer-alt"></i> Detection Sensitivity:</label>
+                        <div class="slider-container">
+                            <input type="range" id="detection-sensitivity" min="1" max="10" value="7" oninput="updateSensitivity(this.value)">
+                            <span id="sensitivity-value">Medium-High (7/10)</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="auto-flag"><i class="fas fa-flag"></i> Auto-Flag Threshold:</label>
+                        <select id="auto-flag">
+                            <option value="80">80% Confidence</option>
+                            <option value="70" selected>70% Confidence</option>
+                            <option value="60">60% Confidence</option>
+                            <option value="50">50% Confidence</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="check-duplicates"><i class="fas fa-copy"></i> Check for Duplicates:</label>
+                        <select id="check-duplicates">
+                            <option value="yes" selected>Yes (Recommended)</option>
+                            <option value="no">No</option>
+                        </select>
+                    </div>
+                    
+                    <button class="btn-primary" onclick="saveDetectionSettings()">
+                        <i class="fas fa-save"></i> Save Settings
+                    </button>
+                    
+                    <div class="chart-container">
+                        <h4><i class="fas fa-chart-line"></i> Fake Report Trend</h4>
+                        <div class="chart-placeholder" id="fake-report-chart">
+                            <!-- Simple chart using CSS -->
+                            <div class="simple-chart">
+                                <div class="chart-bar" style="height: 40%;" title="Jan: 15 reports"></div>
+                                <div class="chart-bar" style="height: 60%;" title="Feb: 22 reports"></div>
+                                <div class="chart-bar" style="height: 80%;" title="Mar: 30 reports"></div>
+                                <div class="chart-bar" style="height: 65%;" title="Apr: 24 reports"></div>
+                                <div class="chart-bar" style="height: 50%;" title="May: 19 reports"></div>
+                                <div class="chart-bar" style="height: 35%;" title="Jun: 13 reports"></div>
+                            </div>
+                            <div class="chart-labels">
+                                <span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Forecast & Audit Section -->
+        <div id="forecast-audit" class="feature-section">
+            <h2 class="section-title"><i class="fas fa-chart-bar"></i> Forecast & Audit</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h3><i class="fas fa-crystal-ball"></i> Incident Forecast</h3>
+                    <p class="feature-desc">Predict future incidents based on historical data and trends.</p>
+                    
+                    <div class="form-group">
+                        <label for="forecast-period"><i class="far fa-calendar-alt"></i> Forecast Period:</label>
+                        <select id="forecast-period" onchange="loadForecastData()">
+                            <option value="week">Next Week</option>
+                            <option value="month" selected>Next Month</option>
+                            <option value="quarter">Next Quarter</option>
+                        </select>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <h4><i class="fas fa-project-diagram"></i> Predicted Incident Types</h4>
+                        <div class="forecast-chart">
+                            <div class="forecast-item">
+                                <div class="forecast-label">Technical</div>
+                                <div class="forecast-bar">
+                                    <div class="forecast-fill" style="width: 75%; background-color: #4d7cff;"></div>
+                                </div>
+                                <div class="forecast-value">75%</div>
+                            </div>
+                            <div class="forecast-item">
+                                <div class="forecast-label">Electrical</div>
+                                <div class="forecast-bar">
+                                    <div class="forecast-fill" style="width: 50%; background-color: #ff6b6b;"></div>
+                                </div>
+                                <div class="forecast-value">50%</div>
+                            </div>
+                            <div class="forecast-item">
+                                <div class="forecast-label">Plumbing</div>
+                                <div class="forecast-bar">
+                                    <div class="forecast-fill" style="width: 35%; background-color: #2ed573;"></div>
+                                </div>
+                                <div class="forecast-value">35%</div>
+                            </div>
+                            <div class="forecast-item">
+                                <div class="forecast-label">Facility</div>
+                                <div class="forecast-bar">
+                                    <div class="forecast-fill" style="width: 25%; background-color: #ffa502;"></div>
+                                </div>
+                                <div class="forecast-value">25%</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="message info">
+                        <i class="fas fa-lightbulb"></i> <strong>Prediction:</strong> Expected 15-20% increase in technical incidents next month.
+                    </div>
+                    
+                    <div class="button-group">
+                        <button class="btn-primary" onclick="generateForecastReport()">
+                            <i class="fas fa-file-download"></i> Generate Forecast Report
+                        </button>
+                        <button class="btn-secondary" onclick="viewHistoricalData()">
+                            <i class="fas fa-database"></i> View Historical Data
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="feature-card">
+                    <h3><i class="fas fa-clipboard-check"></i> System Audit</h3>
+                    <p class="feature-desc">Audit logs and system activities for compliance.</p>
+                    
+                    <div class="form-group">
+                        <label for="audit-date"><i class="far fa-calendar"></i> Select Date:</label>
+                        <input type="date" id="audit-date" value="2024-12-10">
+                    </div>
+                    
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Time</th>
+                                    <th>User</th>
+                                    <th>Action</th>
+                                    <th>Details</th>
+                                </tr>
+                            </thead>
+                            <tbody id="audit-log">
+                                <tr>
+                                    <td>10:30 AM</td>
+                                    <td>admin_user</td>
+                                    <td><span class="badge audit">System Access</span></td>
+                                    <td>Logged into admin dashboard</td>
+                                </tr>
+                                <tr>
+                                    <td>11:15 AM</td>
+                                    <td>admin_user</td>
+                                    <td><span class="badge routing">Routing</span></td>
+                                    <td>Assigned incident #4872 to John Techman</td>
+                                </tr>
+                                <tr>
+                                    <td>12:45 PM</td>
+                                    <td>admin_user</td>
+                                    <td><span class="badge detection">Detection</span></td>
+                                    <td>Flagged report #5123 as fake</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="button-group">
+                        <button class="btn-primary" onclick="loadAuditLog()">
+                            <i class="fas fa-search"></i> Load Audit Log
+                        </button>
+                        <button class="btn-success" onclick="exportAuditLog()">
+                            <i class="fas fa-file-export"></i> Export to CSV
+                        </button>
+                        <button class="btn-secondary" onclick="clearAuditLog()">
+                            <i class="fas fa-trash-alt"></i> Clear Log
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLA Escalation Section -->
+        <div id="sla-escalation" class="feature-section">
+            <h2 class="section-title"><i class="fas fa-clock"></i> SLA Escalation Management</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h3><i class="fas fa-exclamation-triangle"></i> SLA Violations</h3>
+                    <p class="feature-desc">Incidents exceeding Service Level Agreement time limits.</p>
+                    
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Incident ID</th>
+                                    <th>Time Elapsed</th>
+                                    <th>SLA Limit</th>
+                                    <th>Priority</th>
+                                    <th>Assigned To</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="sla-incidents">
+                                <tr>
+                                    <td><i class="fas fa-hashtag"></i> #INC-2024-5001</td>
+                                    <td><span class="time-violation">48 hours</span></td>
+                                    <td>24 hours</td>
+                                    <td><span class="badge high-priority">HIGH</span></td>
+                                    <td>John Techman</td>
+                                    <td><button class="btn-danger btn-sm" onclick="escalateIncident(5001)">
+                                        <i class="fas fa-level-up-alt"></i> Escalate
+                                    </button></td>
+                                </tr>
+                                <tr>
+                                    <td><i class="fas fa-hashtag"></i> #INC-2024-5002</td>
+                                    <td><span class="time-warning">72 hours</span></td>
+                                    <td>48 hours</td>
+                                    <td><span class="badge medium-priority">MEDIUM</span></td>
+                                    <td>Sarah Electric</td>
+                                    <td><button class="btn-danger btn-sm" onclick="escalateIncident(5002)">
+                                        <i class="fas fa-level-up-alt"></i> Escalate
+                                    </button></td>
+                                </tr>
+                                <tr>
+                                    <td><i class="fas fa-hashtag"></i> #INC-2024-5003</td>
+                                    <td><span class="time-warning">60 hours</span></td>
+                                    <td>48 hours</td>
+                                    <td><span class="badge medium-priority">MEDIUM</span></td>
+                                    <td>Mike Plumber</td>
+                                    <td><button class="btn-danger btn-sm" onclick="escalateIncident(5003)">
+                                        <i class="fas fa-level-up-alt"></i> Escalate
+                                    </button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="button-group">
+                        <button class="btn-danger" onclick="escalateAllViolations()">
+                            <i class="fas fa-bolt"></i> Escalate All Violations
+                        </button>
+                        <button class="btn-primary" onclick="viewSLAReport()">
+                            <i class="fas fa-chart-line"></i> View SLA Report
+                        </button>
+                    </div>
+                    
+                    <div class="message warning">
+                        <i class="fas fa-clock"></i> <strong>Warning:</strong> 5 incidents are approaching SLA violation (80% of time limit).
+                    </div>
+                </div>
+                
+                <div class="feature-card">
+                    <h3><i class="fas fa-cog"></i> SLA Configuration</h3>
+                    <p class="feature-desc">Configure Service Level Agreement parameters for different incident types.</p>
+                    
+                    <div class="form-group">
+                        <label for="sla-technical"><i class="fas fa-desktop"></i> Technical Incidents SLA:</label>
+                        <div class="input-with-unit">
+                            <input type="number" id="sla-technical" value="24" min="1" max="168">
+                            <span class="unit">hours</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="sla-electrical"><i class="fas fa-bolt"></i> Electrical Incidents SLA:</label>
+                        <div class="input-with-unit">
+                            <input type="number" id="sla-electrical" value="48" min="1" max="168">
+                            <span class="unit">hours</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="sla-plumbing"><i class="fas fa-faucet"></i> Plumbing Incidents SLA:</label>
+                        <div class="input-with-unit">
+                            <input type="number" id="sla-plumbing" value="72" min="1" max="168">
+                            <span class="unit">hours</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="sla-priority"><i class="fas fa-flag"></i> High Priority SLA:</label>
+                        <div class="input-with-unit">
+                            <input type="number" id="sla-priority" value="12" min="1" max="168">
+                            <span class="unit">hours</span>
+                        </div>
+                    </div>
+                    
+                    <div class="button-group">
+                        <button class="btn-primary" onclick="saveSLASettings()">
+                            <i class="fas fa-save"></i> Save SLA Settings
+                        </button>
+                        <button class="btn-secondary" onclick="resetSLASettings()">
+                            <i class="fas fa-undo"></i> Reset to Default
+                        </button>
+                    </div>
+                    
+                    <div class="sla-summary">
+                        <h4><i class="fas fa-info-circle"></i> Current SLA Summary</h4>
+                        <p>• Technical: 24 hours response time</p>
+                        <p>• Electrical: 48 hours response time</p>
+                        <p>• Plumbing: 72 hours response time</p>
+                        <p>• High Priority: 12 hours response time</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>Real Time Incident Management System | Department of Computer Science | Web Technology Project</p>
+            <p class="copyright">© 2024 IncidentMS Admin Dashboard. All rights reserved.</p>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="admin_script.js"></script>
+</body>
+</html>
